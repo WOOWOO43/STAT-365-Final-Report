@@ -3,7 +3,7 @@ title: "Title of Report"
 date: last-modified
 date-format: "MMMM D, YYYY"
 author: 
-    - name: Warren Woo
+    - name: Warren
       affil-id: 1
     - name: Second Author
       affil-id: 1
