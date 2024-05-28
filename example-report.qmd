@@ -5,7 +5,7 @@ date-format: "MMMM D, YYYY"
 author: 
     - name: Warren
       affil-id: 1
-    - name: Second Author
+    - name: Zachary
       affil-id: 1
     - name: Third Author
       affil-id: 1
