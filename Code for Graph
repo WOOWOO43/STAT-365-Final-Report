@@ -1,0 +1,48 @@
+
+newData <- Data %>%
+  mutate(
+    decadeintroduced = case_when(
+      X60s_Appearance_Percent != "0.00%" ~ "1960s",
+      X70s_Appearance_Percent != "0.00%" ~ "1970s",
+      X80s_Appearance_Percent != "0.00%" ~ "1980s",
+      X90s_Appearance_Percent != "0.00%" ~ "1990s",
+      TRUE ~ "Unknown"
+    ),
+    X90s_Appearance_Percent = as.numeric(sub("%", "", X90s_Appearance_Percent))
+  )
+
+Data_90s <- newData %>%
+  filter(decadeintroduced != "Unknown") %>%
+  select(decadeintroduced, Gender, X90s_Appearance_Percent)
+
+
+  gather(key = "Decade", value = "AppearanceRate", X90s_Appearance_Percent)
+
+# Calculate average appearance rate grouped by decadeintroduced and Gender
+average_rate <- appearance_data %>%
+  group_by(decadeintroduced, Gender) %>%
+  summarise(avg_appearance_rate = mean(AppearanceRate, na.rm = TRUE))
+
+# Calculate combined average appearance rate
+combined_rate <- appearance_data %>%
+  group_by(decadeintroduced) %>%
+  summarise(avg_appearance_rate = mean(AppearanceRate, na.rm = TRUE)) %>%
+  mutate(Gender = "Combined")
+
+# Combine all data
+combined_data <- bind_rows(average_rate, combined_rate)
+
+# Plotting
+plot <- ggplot(combined_data, aes(x = decadeintroduced, y = avg_appearance_rate, fill = Gender)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(
+    title = "Average Appearance Rate (In the 90s) by Decade Introduced and Gender",
+    x = "Decade Introduced",
+    y = "Average Appearance Rate (%)",
+    fill = "Gender"
+  ) + 
+  theme_bw() +
+  facet_wrap(~ Gender) +
+  scale_fill_manual(values = c("Combined" = "lightgreen", "F" = "lightpink", "M" = "lightblue1"))
+
+print(plot)
