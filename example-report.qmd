@@ -5,7 +5,7 @@ date-format: "MMMM D, YYYY"
 author: 
     - name: Warren Woo
       affil-id: 1
-    - name: Zachary
+    - name: Zachary Lakin
       affil-id: 1
     - name: Third Author
       affil-id: 1
