@@ -46,3 +46,24 @@ plot <- ggplot(combined_data, aes(x = decadeintroduced, y = avg_appearance_rate,
   scale_fill_manual(values = c("Combined" = "lightgreen", "F" = "lightpink", "M" = "lightblue1"))
 
 print(plot)
+
+
+
+
+
+Data <- Data %>%
+  mutate(
+    TotalValue = TotalValue_heritage + TotalValue_ebay
+  )
+
+# Create a scatter plot
+scatter_plot <- ggplot(Data, aes(x = TotalIssues, y = TotalValue)) +
+  geom_point() +
+  geom_smooth(method ="lm", se = FALSE, linetype = "dashed", color = "navy") +
+  labs(title = "Total Value vs Total Appearances",
+    x = "Total Appearances",
+    y = "Total Value ($)"
+  ) + theme_bw() + theme(plot.title = element_text(hjust=0.5)) +
+  scale_y_continuous(labels = comma)
+
+print(scatter_plot)
