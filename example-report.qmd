@@ -53,7 +53,16 @@ library(tidyr)
 ```
 
 ## Introduction {#intro}
-What factors influence appearance rate for X-Men characters in the comics?
+
+Have you ever wondered what factors make certain X-Men members appear more frequently than others in the comic book series? This report aims to uncover the key variables that influence the total appearance count of X-Men characters. By analyzing a dataset of 26 X-Men members featured in issues from the 1960s to the 1990s, we can gain insights into what drives a character's prominence and staying power in this iconic franchise.
+
+The dataset used in this analysis was compiled by Anderson Evans, a writer for the online website Rally. Evans collected the data from the Marvel Fandom Database, meticulously counting the appearances of each X-Men character in issues released between 1963 and 1992. The dataset includes 44 variables for each of the 26 characters, such as their total appearances, appearance percentages by decade, estimated monetary value, and gender.
+
+To determine the factors that significantly impact an X-Men character's total appearances, several statistical methods will be employed. A chi-square goodness of fit test will assess if the distribution of issues per member follows a specific pattern. Linear regression will be used to model the relationship between the number of issues and other quantitative variables, such as the decade of publication. Finally, analysis of variance (ANOVA) will compare the mean number of issues across different categories, like the X-Men eras.
+
+It is important to acknowledge some limitations of the dataset that may affect the conclusions drawn from this analysis. The unequal representation of male and female characters necessitates using appearance rates instead of raw appearance counts when examining gender differences. Additionally, the dataset includes only a subset of all X-Men characters and is limited to comics published from the 1960s to the 1990s, potentially restricting the generalizability of the findings.
+
+This report will begin by providing an overview of the dataset and variables, followed by a detailed description of the analytical methods used. The results section will present the findings from each statistical test, and the discussion will interpret these results in the context of the research question. Finally, the conclusion will summarize the key takeaways and suggest future directions for research on factors influencing X-Men character appearances.
 
 
 ## Data and Methods
