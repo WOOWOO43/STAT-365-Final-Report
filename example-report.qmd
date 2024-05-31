@@ -7,7 +7,7 @@ author:
       affil-id: 1
     - name: Zachary Lakin
       affil-id: 2
-    - name: Third Author
+    - name: Daniel Tsemekhman
       affil-id: 1
     - name: Fourth Author
       affil-id: 1
