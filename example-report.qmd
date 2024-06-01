@@ -113,10 +113,12 @@ palmerpenguins::penguins |>
 ## Discussion {#discussion}
 Our report aimed to uncover the key variables that influence the total appearance count of X-Men characters. After conducting our analysis, we learned that the more profitable an X-Men character is, the more they're going to appear in X-Men comic-book issues. 
 Did the data behave as you expected?
+The data did not behave as we expected. 
 Is the result statistically significant? How large is the effect? Would you consider it practically significant? How are you deciding? (Do you need to bring in any subject-matter knowledge here? For example 2 goals in hockey is a lot, but 2 points in basketball is a close game!)
 Strengths (don’t restate but interpret) of data collection and analysis methods
 Can you draw cause-and-effect conclusions?
 To what population are you willing to generalize?
+We can generalize our results to all X-Men characters that appeared in comic book issues in the decades between 60's and 90's.
 How does your study contribute to the existing knowledge base and the larger context?
 Critically assess any limitations or potential biases and how they impacted the interpretation of your findings.
 Note any deficiencies or unexplained data.
