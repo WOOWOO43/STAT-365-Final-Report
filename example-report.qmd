@@ -65,49 +65,85 @@ It is important to acknowledge some limitations of the dataset that may affect t
 This report will begin by providing an overview of the dataset and variables, followed by a detailed description of the analytical methods used. The results section will present the findings from each statistical test, and the discussion will interpret these results in the context of the research question. Finally, the conclusion will summarize the key takeaways and suggest future directions for research on factors influencing X-Men character appearances.
 
 
+
 ## Data and Methods
 
+
 ### Data Collection
+The data collection took place in 2022 by Anderson Evans for his article on the website Rallyrd.com. Rally is an asset investment company which allows users to buy and sell equity shares in collectible assets. The data collection took place at the Rally company, looking at websites such as UncannyXMen.net and the Marvel Fandom Database. There are only 26 datapoints/observational units in this dataset, and it is 26 indidivual X-men. A computer was computer was used to collect the data possibly from api, and webscraping. Variables used, 
+TotalValue_heritage	Total value of each X-Men team member's total number of issues as reflected by Heritage highest sale. Along with their values for 60s, 70s, 80s, and 90s. I also used the ebay counterpart for this which was the Total value of each X-Men team member's total number of issues as reflected by Ebays highest sale, and I combined these into TotalValue, and TotalValue60s, TotalValue70s, TotalValue80s, and TotalValue90s. Other variables used were the Members themselves, and Total Issues which is the total amount of issues from the 60s-90s. We are interested in if what factors influence a characters appearance rate.
+
 
 ### Statistical Analysis
-
-## Results {#results}
-
-You could use in line code to provide results such as: Information about `r nrow(penguins)` penguins were collected and made available by Dr. Kristen Gorman and the Palmer Station, Antarctica LTER, a member of the Long Term Ecological Research Network.
-
-As shown in @fig-penguin-plot, we can see abc. See <https://quarto.org/docs/authoring/cross-references.html> for more about cross referencing plots.
-
-Note! To cross reference a figure, the label must start with fig-xxx.
-
 ```{r}
-#| label: fig-penguin-plot
-#| fig-cap: "Your figure caption."
-#| fig-alt: "Your figure alternative text."
-#| fig-align: center
-#| fig-pos: "H"
+MMO|>
+  mutate(TotalValue_heritage = TotalValue_heritage+TotalValue_ebay)
+
+
+IssuesVVal <- lm(TotalIssues~ TotalValue60s_heritage + TotalValue70s_heritage  + TotalValue80s_heritage  + TotalValue90s_heritage , data = MMO)
+
+summary(IssuesVVal)
+
+hist(resid(IssuesVVal))
+
+plot(IssuesVVal)
+
 
 
 ```
-Supported by @tbl-penguin-summary, we can see abc. See <https://haozhu233.github.io/kableExtra/awesome_table_in_pdf.pdf> for more about styling tables.
+After running a linear regression and checking model assumptions it seems like all the FINE assumptions are met normality is good, equal varince seems okay, and independence is met through the assumption that the the values of the comics dont effect each other, but there is a light issue as the sample size is small, it is only 26 units so.
 
-Note! To cross reference a table, the label must start with tbl-xxx.
 
 ```{r}
-#| label: tbl-penguin-summary
-#| tbl-cap: "Put caption here."
-#| tbl-pos: "H"
 
-palmerpenguins::penguins |> 
-  group_by(species) |> 
-  summarize(avg_bill_length = mean(bill_length_mm, na.rm = T),
-            sd_bill_length = sd(bill_length_mm, na.rm = T)
-            ) |> 
-  kableExtra::kbl(digits = 1,
-                  col.names = c("Species", 
-                                "Average Bill Length (mm)",
-                                "Standard Deviation of Bill Length (mm)"),
-                  booktabs = TRUE
-                  )
+full_model <- lm( TotalIssues~ TotalValue60s_heritage + TotalValue70s_heritage  + TotalValue80s_heritage  + TotalValue90s_heritage, data = MMO)
+
+
+reduced_model <- lm( TotalIssues~ TotalValue60s_heritage + TotalValue80s_heritage+TotalValue90s_heritage, data = MMO)
+
+
+partial_f_test <- anova(reduced_model, full_model)
+
+
+print(partial_f_test)
+
+```
+The partial F-test assesses whether the additional variable, TotalValue70s_heritage, significantly improves the fit of the model.
+
+The results indicate that Model 2, which includes TotalValue70s_heritage, provides a significantly better fit to the data compared to Model 1, as evidenced by the F-statistic of 4.2273 with a corresponding p-value of 0.05242. However, this p-value is marginally above the conventional significance level of 0.05, suggesting that the improvement in fit may not be statistically significant at the 5% level but could be considered significant at a higher significance level.
+
+Therefore, while there is some evidence to suggest that TotalValue70s_heritage contributes to explaining the variability in TotalIssues, further investigation or a larger sample size may be warranted to confirm its significance. But for now I will drop the variable.
+
+```{r}
+
+
+
+
+
+
+## Results {#results}
+
+df_stacked <- MMO %>%
+  gather(key = "Period", value = "TotalValstack",TotalValue80s_heritage , TotalValue90s_heritage,TotalValue60s_heritage  )
+
+
+sum1= lm(TotalValue_heritage~TotalValstack, data = df_stacked)
+summary(sum1)
+
+
+df_stacked|>
+  ggplot(aes(y=TotalValstack, x=TotalIssues, color=Period))+
+  geom_point()+
+  geom_smooth(method = 'lm', se = FALSE)
+
+```
+
+Red data points (60s heritage) exhibit a trend with a noticeable positive slope, indicating that "TotalValsstack" increases significantly with an increase in "TotalIssues."
+Green data points (80s heritage) show a slight positive trend, but the increase in "TotalValsstack" with "TotalIssues" is much less pronounced compared to the 60s heritage.
+Blue data points (90s heritage) have a trend line almost flat, suggesting little to no correlation between "TotalValsstack" and "TotalIssues."
+
+In the end, it does seem like the price of the X-men comics does predict the appearance of certain heritage periods. The linear regression analysis indicates a significant positive relationship between the total value of X-men comics and the heritage periods, as evidenced by the coefficient estimate for TotalValstack (0.8722, p < 0.001). This suggests that as the total value of X-men comics increases, there is a corresponding increase in the likelihood of certain heritage periods being represented. However, it's important to note that while this relationship is statistically significant, other factors may also influence the appearance of heritage periods in X-men comics, and further research could explore these additional factors for a more comprehensive understanding.
+
 ```
 
 ## Discussion {#discussion}
