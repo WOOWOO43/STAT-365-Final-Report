@@ -1,0 +1,244 @@
+---
+title: "Final Report"
+author: 
+  - name: Warren Woo
+    affil-id: 1
+  - name: Zachary Rate
+    affil-id: 1
+  - name: Justin Mai
+    affil-id: 1
+  - name: Daniel Tsemekhman
+    affil-id: 1
+affiliations:
+  - id: 1
+    name: Department of Statistics, Cal Poly - SLO
+date: last-modified
+date-format: "5/31/24"
+format: 
+  html:
+    self-contained: true
+    code-tools: true
+    toc: true
+editor: source
+execute: 
+  error: true
+  echo: false  
+  message: false
+  warning: false
+abstract: |
+  The objective of this report is to analyze and determine what factors have the most influence on the appearance rate and the total amount of appearances of X-Men comic characters. The X-Men are a superhero group created by Marvel that were first introduced in 1963 through comic books. For this study, we looked at X-Men comic books issued between 1963 and 1992 and focused on each X-Men's appearance rate and total appearances, or how often each X-Men appeared in the comics over the time period. The data is pulled from an article written by Anderson Evans, a writer for the online website Rally. Evans used the Marvel Fandom Database, an online database with information on every Marvel comic, to count the number of appearances of each X-Men accurately. The dataset contains 26 members of the X-Men, and 44 variables that pertain to each member. We used linear regression to. We found that the biggest factor that had the highest correlation to total appearances was the total value. How valuable a character was deemed had the biggest impact on their total amount of appearances. Ideally there would be more characters in the dataset so that a more detailed analysis can be held.
+
+---
+
+```{r}
+#| label: setup
+MutantData <- read.csv(
+             "/Users/warre/Desktop/STAT365/MutantWithGenders.csv")
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(kableExtra)
+library(forcats)
+
+
+mean_ignore_zero <- function(x) {
+  mean(x[x != 0], na.rm = TRUE)
+}
+
+average_values <- MutantData %>%
+  group_by(Gender) %>%
+  summarise(
+    Avg_heritage_60s = mean_ignore_zero(TotalValue60s_heritage),
+    Avg_ebay_60s = mean_ignore_zero(TotalValue60s_ebay),
+    Avg_heritage_70s = mean_ignore_zero(TotalValue70s_heritage),
+    Avg_ebay_70s = mean_ignore_zero(TotalValue70s_ebay),
+    Avg_heritage_80s = mean_ignore_zero(TotalValue80s_heritage),
+    Avg_ebay_80s = mean_ignore_zero(TotalValue80s_ebay),
+    Avg_heritage_90s = mean_ignore_zero(TotalValue90s_heritage),
+    Avg_ebay_90s = mean_ignore_zero(TotalValue90s_ebay)
+  ) %>%
+  gather(decade, value, starts_with("Avg")) %>%
+  mutate(
+    Source = ifelse(grepl("heritage", decade), "Heritage", "eBay"),
+    Decade = as.numeric(sub(".*?(\\d+).*", "\\1", decade))
+  )
+
+MutantData <- MutantData %>%
+  mutate(GrandTotalValue = TotalValue_heritage + TotalValue_ebay)
+MutantData <- MutantData %>%
+  mutate(
+    decadeintroduced = case_when(
+      X60s_Appearance_Percent != "0.00%" ~ "1960s",
+      X70s_Appearance_Percent != "0.00%" ~ "1970s",
+      X80s_Appearance_Percent != "0.00%" ~ "1980s",
+      X90s_Appearance_Percent != "0.00%" ~ "1990s",
+      TRUE ~ "Unknown"
+    ),
+    X90s_Appearance_Percent = as.numeric(sub("%", "", X90s_Appearance_Percent))
+  )
+```
+
+
+## Introduction {#intro}
+Have you ever wondered what factors make certain X-Men members appear more frequently than others in the comic book series? This report aims to uncover the key variables that influence the total appearance count of X-Men characters. By analyzing a data set of 26 X-Men members featured in issues from the 1960s to the 1990s, we can gain insights into what drives a character's prominence and staying power in this iconic franchise. The data set used in this analysis was compiled by Anderson Evans, a writer for the online website Rally. Evans collected the data from the Marvel Fandom Database, meticulously counting the appearances of each X-Men character in issues released between 1963 and 1992. The dataset includes 44 variables for each of the 26 characters, such as their total appearances, appearance percentages by decade, estimated monetary value, and gender. To determine the factors that significantly impact an X-Men character's total appearances, several statistical methods will be employed. This report will begin by providing an overview of the data set and variables, followed by a detailed description of the statistical methods used. The results section will present the findings in the form of graphs and tables, and the discussion will interpret these results as well as discuss any issues or limitations with the data. Finally, the conclusion will summarize the key takeaways and suggest future directions for research on factors influencing X-Men character appearances.
+
+
+## Data and Methods
+
+### Data Collection
+
+### Statistical Analysis
+
+## Results {#results}
+
+```{r}
+#| label: T
+#| fig-cap: "Table 1: The table displays all of the X-Men members total issues, ordered from greatest to least"
+#| fig-align: center
+#| fig-pos: "H"
+library(kableExtra)
+tabledata <- MutantData
+
+tabledata <- tabledata[order(tabledata$TotalIssues, decreasing = TRUE), c("Member", "TotalIssues", "Gender"), drop = FALSE]
+
+
+color.male = which(tabledata$Gender == 'M')
+color.female = which(tabledata$Gender == 'F')
+
+kbl(tabledata, booktabs = T) %>%
+  kable_styling(position = "center") %>%
+  kable_styling(font_size = 20) %>%
+  row_spec(color.male, color = "blue") %>%
+  row_spec(color.female, color = "pink1")
+```
+With a total of 26 X-Men members to go off of, 15 being male and 11 being female, the mean amount of total issues was 85.27. The mean for males was 94.73 and the mean for females was 72.36. The highest male was Scott Summers with 197 appearances and the lowest male was John Proudstar with only 3 appearances. The highest female was Ororo Munroe with 190 appearances and the lowest females was Remy Lebeau with 17 appearances.
+
+After running a two-sample t-test, with a p-value of .365, we concluded that there was no significant different in total issue means between the two genders. Despite the fact that 6 out of the top 8 X-Men with the highest amount of total issues are males (Table 1), we concluded that there was not a significant difference in means. A 95% confidence interval of (-72.41, 27.67) would also further support this claim. Our degrees of freedom was 23.44. So in conclusion we that gender does not play a signficant role in determining the appearance rate of a X-Men.
+ 
+
+```{r}
+#| label: f
+#| fig-cap: "Figure 1: This graph shows the variability in total issues for males and females X-Men characters. Each dot is one member."
+#| fig-align: center
+#| fig-pos: "H"
+
+
+gender_boxplot <- ggplot(MutantData, aes(x = Gender, y = TotalIssues, color = Gender)) +
+  geom_boxplot(aes(fill = Gender), alpha = 0.5) +
+  geom_jitter(position = position_jitter(0.2), size = 1, alpha = 0.7) +
+  labs(
+    title = "Variability in Total Issues by Gender", 
+    x = "Sex", 
+    y = "Total Issues", 
+    color = "Sex", 
+    legend = "Sex",
+    fill = "Sex"
+  )  +
+  theme_bw() +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    legend.spacing.y = unit(0, "mm"), 
+    panel.border = element_rect(colour = "black", fill = NA),
+    aspect.ratio = 1, 
+    axis.text = element_text(colour = 1, size = 12),
+    legend.background = element_blank(),
+    legend.box.background = element_rect(colour = "black"),
+    plot.caption = ggtext::element_markdown(
+      size = 10,
+      face = "italic",
+      lineheight = 1.2,
+      hjust = 0.5,
+      vjust = 0
+    )
+  ) + 
+  scale_color_manual(values = c("pink", "lightblue")) +
+  scale_fill_manual(values = c("pink", "lightblue"))
+
+print(gender_boxplot)
+
+```
+```{r}
+#| label: h
+#| fig-cap: "Figure 2: This graph displays the average appearance rate in the 90s,  categorized by the decade each character made their debut in."
+#| fig-align: center
+#| fig-pos: "H"
+
+MutantData <- MutantData %>%
+  mutate(
+    decadeintroduced = case_when(
+      X60s_Appearance_Percent != "0.00%" ~ "1960s",
+      X70s_Appearance_Percent != "0.00%" ~ "1970s",
+      X80s_Appearance_Percent != "0.00%" ~ "1980s",
+      X90s_Appearance_Percent != "0.00%" ~ "1990s",
+      TRUE ~ "Unknown"
+    ),
+    X90s_Appearance_Percent = as.numeric(sub("%", "", X90s_Appearance_Percent))
+  )
+
+Data_90s <- MutantData %>%
+  filter(decadeintroduced != "Unknown") %>%
+  select(decadeintroduced, Gender, X90s_Appearance_Percent)
+
+appearance_data <- Data_90s %>%
+  gather(key = "Decade", value = "AppearanceRate", X90s_Appearance_Percent)
+
+average_rate <- appearance_data %>%
+  group_by(decadeintroduced, Gender) %>%
+  summarise(avg_appearance_rate = mean(AppearanceRate, na.rm = TRUE))
+
+combined_rate <- appearance_data %>%
+  group_by(decadeintroduced) %>%
+  summarise(avg_appearance_rate = mean(AppearanceRate, na.rm = TRUE)) %>%
+  mutate(Gender = "Combined")
+
+combined_data <- bind_rows(average_rate, combined_rate)
+
+decadeplot <- ggplot(combined_data, aes(x = decadeintroduced, y = avg_appearance_rate, fill = decadeintroduced)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(
+    title = "Average Appearance Rate (In the 90s) by Decade Introduced",
+    x = "Decade Introduced",
+    y = "Average Appearance Rate (%)",
+    fill = "Decade X-Men was Introduced"
+  ) + 
+  theme_bw() +
+  scale_y_continuous(expand = c(0, 0), limits = c(0, 80)) 
+
+print(decadeplot)
+```
+```{r}
+#| label: p
+#| fig-cap: "Figure 3: Every dot is an X-Men, graphed by their total value, between both Ebay and Heritage, and total issues"
+#| fig-align: center
+#| fig-pos: "H"
+
+
+scatter_plot <- ggplot(MutantData, aes(x = TotalIssues, y = GrandTotalValue)) +
+  geom_point() +
+  geom_smooth(method ="lm", se = FALSE, linetype = "solid", color = "navy") +
+  labs(title = "Total Value vs Total Issues",
+    x = "Total Issues",
+    y = "Total Value ($)"
+  ) + theme_bw() + theme(plot.title = element_text(hjust=0.5)) +
+  scale_y_continuous(labels = scales::dollar)
+
+print(scatter_plot)
+
+```
+Based on Figure 1, Figure 2, and Figure 3, the only variable to have correlation with appearance rate or total total issues was the characters total value. Based off of Table 1 and Figure 1, the gender of a character did not result in having a significant impact on total issues. In Figure 2 we see that there is no discernible pattern when looking at the average appearance rate between the decades. Despite the 1970s group having the highest average appearance rate, the 1960s and 1980s had the 3rd and 4th highest average appearance rate which does not show a pattern. The decade in which a character was introduced in does not seem to have an impact on their appearance rate. In Figure 3 however, we can seen that the graph shows a general positive correlation between appearances and total value, with outliers of high-value characters with few appearances and a dense clustering of many characters with lower appearances and total values. Meaning that characters with a higher amount of total appearances tend to have a higher total value, and characters with a lower amount of total appearances tend to have a lower total value. After running a regression analysis, we find that the p-values for both the intercept and the slope are less than .05, indicating that the total value of character is a strong indicator of total issues. 
+
+## Discussion {#discussion}
+Our report aimed to uncover the key variables that influence the total appearance count of X-Men characters. After conducting our analysis, we learned that the more profitable an X-Men character is, the more they're going to appear in X-Men comic-book issues. This analysis aimed to identify the key factors that influence the total appearance count of X-Men characters in comic book issues from the 1960s to the 1990s. The results suggest that a character's profitability, as measured by their estimated monetary value, is positively correlated with their total number of appearances. This finding aligns with expectations, as publishers are likely to feature popular and lucrative characters more frequently to capitalize on their success and appeal to readers. The effect of profitability on appearance count was found to be statistically significant, with a moderate to large effect size based on the regression analysis. This indicates that the relationship is unlikely due to chance and has practical significance in understanding character prominence. However, it is important to consider that while profitability is a strong predictor, it is not the sole determinant of appearance frequency. Other factors, such as narrative importance, character development, and creative decisions, also play a role in shaping character appearances. The strengths of this study lie in the comprehensive dataset, which covers a substantial period of X-Men history and includes a diverse range of characters. However, the observational nature of the data limits the ability to draw definitive cause-and-effect conclusions. While profitability and appearance count are correlated, it is possible that other unmeasured variables are influencing this relationship. The findings of this study can be generalized to the population of X-Men characters featured in comic books from the 1960s to the 1990s. However, caution should be exercised when extending these conclusions to other comic book franchises or time periods, as the dynamics and factors influencing character appearances may differ. This research contributes to the existing knowledge base by providing empirical evidence for the link between character profitability and appearance frequency in the context of X-Men comics. It highlights the importance of considering financial factors when analyzing character prominence and opens avenues for further research on the interplay between commercial success and creative decisions in the comic book industry.Limitations of this study include the potential for selection bias, as the dataset only includes a subset of X-Men characters and may not fully represent the entire franchise. Additionally, the reliance on estimated monetary values as a proxy for profitability may not capture all aspects of a character's financial success or appeal. Future research could explore alternative measures of profitability and expand the scope of the analysis to include more characters and a wider range of publication years.In conclusion, this study reveals that profitability is a significant factor influencing the total appearance count of X-Men characters in comic books from the 1960s to the 1990s. While this finding provides valuable insights into character prominence, it is important to consider the limitations and potential biases of the analysis when interpreting the results. Further research is needed to fully understand the complex dynamics shaping character appearances in the comic book industry.
+ 
+ 
+## Conclusion {#conclusion}
+Ultimately, what it seems to come down to is that if you're a profitable character, you get put in more issues. Outside of monetary value, from the data collected, there doesn't seem to be a lot of other contributing factors to a characters total appearances. We can also only really generalize this to other X-Men comic book characters. We only looked at X-Men characters, so no other Marvel owned characters or characters outside of Marvel. We also cannot infer causality because there are definitely more possible factors that could contribute to a characters total appearances that we don't have data for, variables such as what writer created that character, amount of media appearances outside of the comics, and how many plots/storylines does that character appear in could all be contributing factors to a characters total appearance count. For those interested, these are definitely areas that need more investigating
+
+## References {#references}
+
+Marvel database. Marvel Fandom Database. (n.d.). https://marvel.fandom.com/wiki/Marvel_Database 
+
+Evans, A. (2023, June 16). Mutant Moneyball: A Data Driven Ultimate X-Men. Rally. https://rallyrd.com/mutant-moneyball-a-data-driven-ultimate-x-men/ 
+
+The R project for statistical computing. R. (n.d.). https://www.r-project.org/ 
