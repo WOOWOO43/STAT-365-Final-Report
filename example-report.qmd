@@ -79,6 +79,45 @@ MutantData <- MutantData %>%
       TRUE ~ "Unknown"
     ),
     X90s_Appearance_Percent = as.numeric(sub("%", "", X90s_Appearance_Percent))
+
+
+BOXPLOT CODE
+Sex_boxplot <- ggplot(MutantData, aes(x = Sex, y = TotalIssues, color = Sex)) +
+  geom_boxplot(aes(fill = Sex), alpha = 0.5) +
+  geom_jitter(position = position_jitter(0.2), size = 1, alpha = 0.7) +
+  labs(
+    title = "Variability in Total Issues by Sex", 
+    x = "Sex", 
+    y = "Total Issues", 
+    color = "Sex", 
+    legend = "Sex",
+    fill = "Sex"
+  )  +
+  theme_bw() +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    legend.spacing.y = unit(0, "mm"), 
+    panel.border = element_rect(colour = "black", fill = NA),
+    aspect.ratio = 1, 
+    axis.text = element_text(colour = 1, size = 12),
+    legend.background = element_blank(),
+    legend.box.background = element_rect(colour = "black"),
+    plot.caption = ggtext::element_markdown(
+      size = 10,
+      face = "italic",
+      lineheight = 1.2,
+      hjust = 0.5,
+      vjust = 0
+    )
+  ) + 
+  scale_color_manual(values = c("pink", "lightblue")) +
+  scale_fill_manual(values = c("pink", "lightblue"))
+
+print(Sex_boxplot)
+nolegendsex <- Sex_boxplot +
+  theme(legend.position = "none")
+
+print(nolegendsex)
   )
 
 ### Data Collection
