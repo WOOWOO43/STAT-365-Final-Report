@@ -67,7 +67,19 @@ This report will begin by providing an overview of the dataset and variables, fo
 
 
 ## Data and Methods
-
+MutantData <- MutantData %>%
+  mutate(GrandTotalValue = TotalValue_heritage + TotalValue_ebay)
+MutantData <- MutantData %>%
+  mutate(
+    decadeintroduced = case_when(
+      X60s_Appearance_Percent != "0.00%" ~ "1960s",
+      X70s_Appearance_Percent != "0.00%" ~ "1970s",
+      X80s_Appearance_Percent != "0.00%" ~ "1980s",
+      X90s_Appearance_Percent != "0.00%" ~ "1990s",
+      TRUE ~ "Unknown"
+    ),
+    X90s_Appearance_Percent = as.numeric(sub("%", "", X90s_Appearance_Percent))
+  )
 
 ### Data Collection
 The data collection took place in 2022 by Anderson Evans for his article on the website Rallyrd.com. Rally is an asset investment company which allows users to buy and sell equity shares in collectible assets. The data collection took place at the Rally company, looking at websites such as UncannyXMen.net and the Marvel Fandom Database. There are only 26 datapoints/observational units in this dataset, and it is 26 indidivual X-men. A computer was computer was used to collect the data possibly from api, and webscraping. Variables used, 
