@@ -3,7 +3,7 @@ title: "Final Report"
 author: 
   - name: Warren Woo
     affil-id: 1
-  - name: Zachary Rate
+  - name: Zachary Lakin
     affil-id: 1
   - name: Justin Mai
     affil-id: 1
