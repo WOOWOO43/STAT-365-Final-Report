@@ -26,8 +26,7 @@ execute:
   message: false
   warning: false
 abstract: |
-  In this study, we investigated the factors affecting the frequency of appearances of X-Men characters in comic books published between 1963 and 1992. Our analysis centered on a dataset featuring 26 prominent characters, analyzing 44 variables per character, including appearance counts, demographic details, and estimated financial values. Employing statistical techniques such as linear regression, we identified significant predictors of character visibility, notably a character's estimated monetary value. Our findings contribute to understanding the dynamics of character utilization in serialized media, highlighting the impact of profitability on character prominence.
-
+Exploring the spotlight in superhero sagas: What determines which X-Men characters stand out in the pages of Marvel Comics? This study delves into the factors influencing the appearance frequency of X-Men characters in comic books published from 1963 to 1992. Motivated by the intriguing variance in character prominence, we analyze a dataset encompassing 26 X-Men, examining 44 variables per character, including total appearances, demographic details, and estimated financial values. Employing statistical techniques such as linear regression, we identify the significant predictors of visibility, with a particular focus on a character’s estimated monetary value. Our findings shed light on the complex dynamics of narrative and market influences in the X-Men series, offering insights into how profitability might shape character development in serialized media.
 ---
 
 ```{r}
@@ -81,7 +80,9 @@ MutantData <- MutantData %>%
 
 
 ## Introduction {#intro}
-The iconic X-Men series, which debuted in 1963, features a cast of characters whose appearances in comic books are influenced by a variety of factors. This report investigates these influences by analyzing data spanning three decades, from 1963 to 1992. Compiled by Anderson Evans from the Marvel Fandom Database, the dataset includes comprehensive metrics such as appearance frequencies, financial estimations, and demographic information for 26 characters. Through this study, we aimed to elucidate the factors that significantly affect how often these characters appear in comic books, with a particular focus on the role of profitability. We applied several statistical methods, including linear regression, to determine which variables most significantly predict character appearances. The analysis, results, and implications are detailed in the subsequent sections, providing a clearer understanding of how financial considerations impact character visibility in the X-Men series.
+The X-Men, a cornerstone of Marvel Comics introduced in 1963, showcases a variety of mutants with unique abilities, yet their visibility in the comic series varies significantly. This study investigates what drives the prominence of certain characters over others, analyzing data from 1963 to 1992 to uncover the underlying factors influencing their appearance frequency.
+
+Using a dataset compiled by Anderson Evans from the Marvel Fandom Database, we examine variables such as total appearances, appearance percentages by decade, estimated monetary values, and gender. The findings, based on rigorous statistical analysis, aim to offer a deeper understanding of the dynamics shaping narrative decisions in the X-Men comics. This report will begin by providing an overview of the data set and variables, followed by a detailed description of the statistical methods used. The results section will present the findings in the form of graphs and tables, and the discussion will interpret these results as well as discuss any issues or limitations with the data. Finally, the conclusion will summarize the key takeaways and suggest future directions for research on factors influencing X-Men character appearances.
 
 
 ## Data and Methods
