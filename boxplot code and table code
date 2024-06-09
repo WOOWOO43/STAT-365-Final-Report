@@ -1,0 +1,70 @@
+library(kableExtra)
+library(tidyverse)
+library(ggplot2)
+library(ggtext)
+data = read.csv("MutantWithGenders.csv")
+data2 = read.csv("mutant_moneyball.csv")
+data = data[order(data$TotalIssues,decreasing = TRUE),]
+data2 <- data2 %>%
+  mutate(GrandTotalValue = TotalValue_heritage + TotalValue_ebay)
+data2 <- data2 %>%
+  mutate(
+    decadeintroduced = case_when(
+      X60s_Appearance_Percent != "0.00%" ~ "1960s",
+      X70s_Appearance_Percent != "0.00%" ~ "1970s",
+      X80s_Appearance_Percent != "0.00%" ~ "1980s",
+      X90s_Appearance_Percent != "0.00%" ~ "1990s",
+      TRUE ~ "Unknown"
+    ),
+    X90s_Appearance_Percent = as.numeric(sub("%", "", X90s_Appearance_Percent))
+  )
+model.fit = lm(TotalIssues90s~decadeintroduced, data = data2)
+summary(model.fit)
+decade_boxplot <- ggplot(data2, aes(x = decadeintroduced, y = TotalIssues90s, color = decadeintroduced)) +
+  geom_boxplot(aes(fill = decadeintroduced), alpha = 0.5) +
+  geom_jitter(position = position_jitter(0.2), size = 1, alpha = 0.7) +
+  labs(
+    title = "Variability in Total Issues in the 90s by decade introduced", 
+    x = "Decade Introduced", 
+    y = "Total Issues in 90s", 
+    color = "decadeintroduced", 
+    legend = "decadeintroduced",
+    fill = "decadeintroduced"
+  )  +
+  theme_bw() +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    legend.spacing.y = unit(0, "mm"), 
+    panel.border = element_rect(colour = "black", fill = NA),
+    aspect.ratio = 1, 
+    axis.text = element_text(colour = 1, size = 12),
+    legend.background = element_blank(),
+    legend.box.background = element_rect(colour = "black"),
+    plot.caption = ggtext::element_markdown(
+      size = 10,
+      face = "italic",
+      lineheight = 1.2,
+      hjust = 0.5,
+      vjust = 0
+    )
+  ) + 
+  scale_color_manual(values = c("pink", "lightblue", "green", "red")) +
+  scale_fill_manual(values = c("pink", "lightblue","green", "red"))
+
+print(decade_boxplot)
+nolegendsex <- decade_boxplot +
+  theme(legend.position = "none")
+
+print(nolegendsex)
+
+
+
+
+color.male = which(data$Gender == 'M')
+color.female = which(data$Gender == 'F')
+
+kbl(data, booktabs = T) %>%
+  kable_styling(position = "center") %>%
+  kable_styling(font_size = 20) %>%
+  row_spec(color.male, color = "blue") %>%
+  row_spec(color.female, color = "pink")
