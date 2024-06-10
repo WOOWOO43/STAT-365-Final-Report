@@ -1,42 +1,28 @@
-### Data Collection
-The data collection took place in 2022 by Anderson Evans for his article on the website Rallyrd.com (Evans, 2022). Rally is an asset investment company which allows users to buy and sell equity shares in collectible assets. The data collection took place at the Rally company, looking at websites such as UncannyXMen.net and the Marvel Fandom Database. From the data collected there are only 26 X-men  in this dataset, and in the context of this study they are the observational units.. A computer was used to collect the data possibly from api, and web scraping. Variables used were, TotalValue_heritage, which is the total value of each X-Men team member's total number of issues as reflected by Heritage highest sale. Along with their values for 60s, 70s, 80s, and 90s. We also used the ebay counterpart for this which was the Total value of each X-Men team member's total number of issues as reflected by Ebay's highest sale, and we combined these into TotalValue, and TotalValue60s, TotalValue70s, TotalValue80s, and TotalValue90s. Other variables used were the Members themselves, and Total Issues which is the total amount of issues from the 60s-90s. We are interested in what factors influence a character's appearance rate, the amount of X-Men issues that they appeared in.
+The data collection took place in 2022 by Anderson Evans for his article on the website Rallyrd.com (Evans, 2022). Rally is an asset investment company which allows users to buy and sell equity shares in collectible assets. The data collection took place at the Rally company, looking at websites such as UncannyXMen.net and the Marvel Fandom Database. From the data collected there are only 26 X-men in this dataset, and in the context of this study they are the observational units, Inclusion and . A computer was used to collect the data, from looking on the internet, and including keywords in Ebay search such as included issue title, issue number, and “VG,” which indicates that the seller believed their comic book to be in “Very Good” condition. The original author did not state the criteria for variable exclusion, so it is unknown how observations were excluded.
 
-### Statistical Analysis
+The response variable that we are interested in testing is the total issues of X-men appearances, to see if the variables we choose below have an effect on an X-men’s total issues.
+The variables we used were
 
-
-We ran a multiple linear regression and checking model assumptions it seems like all the FINE (Form, Independence, Normality, Equal Variance) to determine if appropriate assumptions are met: normality is good, equal variance seems okay, and independence is met through the assumption that the the values of the comics don't affect each other, but for context there is a light issue as the sample size is small, it is only 26 X-men.  We wanted to test if sex had an effect on total issues. So we ran a two-sample t-test, with male as one group, and female as the other group.
-
-
-[add table]
-
-Table 1: The table displays all of the X-Men members total issues, ordered from greatest to least
-With a total of 26 X-Men members to go off of, 15 being male and 11 being female, the mean amount of total issues was 85.27. The mean for males was 94.73 and the mean for females was 72.36. The highest male was Scott Summers with 197 appearances and the lowest male was John Proudstar with only 3 appearances. The highest female was Ororo Munroe with 190 appearances and the lowest females was Remy Lebeau with 17 appearances
-
-
-
-
-
-##Results
+TotalValue_heritage: The total value of each X-Men team member's issues as reflected by Heritage's highest sale, in dollars
+TotalValue60s, TotalValue70s, TotalValue80s, TotalValue90s: The total values for each decade (60s, 70s, 80s, and 90s) from Heritage.
+TotalValue_ebay60s, TotalValue_ebay70s, TotalValue_ebay80s, TotalValue_ebay90s: The total value of each X-Men team member's issues as reflected by Ebay's highest sale.
+Members: The X-Men characters.
+Total Issues: The total number of issues each character appeared in from the 60s to the 90s.
+TotalValue, TotalValue60s, TotalValue70s, TotalValue80s, TotalValue90s: Combined values from Heritage and Ebay.
+Sex: The X-men’s sex
+Decade Introduced: The decade of an X-men’s first appearance
 
 
 
 
 
-The partial F-test assesses whether the additional variable, TotalValue70s_heritage, significantly improves the fit of the model.
+### Statistical Methods
+To make the total value easier to understand we merged values from Heritage and Ebay to create TotalValue, along with TotalValue60s, TotalValue70s, TotalValue80s, TotalValue90s, and are using that instead of Heritage and Ebay separately. For the methods in this section the original dataset did not include sex, and decade introduced, our group had to manually add a characters sex based on a google search, and appending the sex using the tidyverse’s mutate feature. For the decade introduced, we mutated the appearance percentage by decade, and found the first instance of a character's appearance that was not zero percent, and assigned them the decade that corresponded to that non-zero percentage. 
 
-The results indicate that Model 2, which includes TotalValue70s_heritage, provides a significantly better fit to the data compared to Model 1, as evidenced by the F-statistic of 4.2273 with a corresponding p-value of 0.05242. However, this p-value is marginally above the conventional significance level of 0.05, suggesting that the improvement in fit may not be statistically significant at the 5% level but could be considered significant at a higher significance level.
-
-Therefore, while there is some evidence to suggest that TotalValue70s_heritage contributes to explaining the variability in TotalIssues, further investigation or a larger sample size may be warranted to confirm its significance. But we did drop the variable.
-
-
-For the two sample T tests, we concluded that we did not have enough evidence that there was a difference in total issue means between the two genders. Despite the fact that 6 out of the top 8 X-Men with the highest amount of total issues are males (Table 1), we concluded that there was not a significant difference in means (t = -0.92376, df = 23.444, p-value = 0.365). A 95% confidence interval of (-72.41, 27.67) would also further support this claim.  This means that we are 95% that the true difference in means for X-men total issues is between a 72.41 issue decrease and a 27.67 issue increase . So in conclusion we believe that gender does not play a significant role in determining the appearance rate of a X-Men.
+We first wanted to test if sex had an effect on total issues. So we ran a two-sample t-test, with male as one group, and female as the other group. The two-sample t-test was conducted to compare the means of total issues between male and female characters. Null Hypothesis (H0): There is no significant difference in the mean number of total issues between male and female X-Men characters.  Alternative Hypothesis (H1): There is a significant difference in the mean number of total issues between male and female X-Men characters.
 
 
-In the end, it does seem like the price of the X-men comics does predict the appearance of certain heritage periods. The linear regression analysis indicates a significant positive relationship between the total value of X-men comics and the heritage periods, as evidenced by the coefficient estimate for TotalValstack (0.8722, p < 0.001). This suggests that as the total value of X-men comics increases, there is a corresponding increase in the likelihood of certain heritage periods being represented. However, it's important to note that while this relationship is statistically significant, other factors may also influence the appearance of heritage periods in X-men comics, and further research could explore these additional factors for a more comprehensive understanding.
-
-
-Appendix
-
+Furthermore the data was analyzed using multiple linear regression twice. The first time was to determine if there were significant differences in the total number of issues based on the decade a character was introduced. While the second time was with a total number of issues, based on the total value of the decade. Checking model assumptions for both models. it seems like all the FINE (Form, Independence, Normality, Equal Variance) to determine if appropriate assumptions are met: normality is good, equal variance seems okay, and independence is met through the assumption that the the values of the comics don't affect each other, but for context there is a light issue as the sample size is small, it is only 26 X-men.  
 
 
 
