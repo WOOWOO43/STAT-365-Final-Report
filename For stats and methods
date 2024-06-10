@@ -1,0 +1,8 @@
+After running a regression analysis, we find that the total value of character is a strong indicator of total issues (p-value = <.01, df = 24, f-statistic = 18.03). This means that there is strong evidence that characters with a higher amount of total appearances tend to have a higher total value, and characters with a lower amount of total appearances tend to have a lower total value. With this, we can predict which characters, based on their total value, will have more appearances going forward in the X-Men comics.
+
+model.fit = lm(TotalIssues90s~decadeintroduced, data = MutantData)
+summary(model.fit)
+
+After running a linear regression test, we determined that we did not have enough evidence to say that there is a significant difference in total issue means between decade introduced. (p-value = .723, df = 22, f-statistic = .4417) Figure 2 shows that each box plot from every decade group overlaps each other. This, along with linear regression test indicate that the total issues for characters across different decades share a considerable amount of common ground and that there is little to no evidence that the decade of introduction is a determining factor of a character's total issues.
+valuelmmodel <- lm(GrandTotalValue ~ TotalIssues, data = MutantData)
+summary(valuelmmodel)
