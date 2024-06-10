@@ -302,7 +302,14 @@ valuescatter <- valuescatter_plot +
 
 print(valuescatter)
 ```
-After running a regression analysis, we found that there was statistically significant evidence that the total value of a character is a strong indicator of total issues (p-value = <.01, df = 18, f-statistic = 66.1). This means that there is strong evidence that characters with a higher amount of total appearances tend to have a higher total value, and characters with a lower amount of total appearances tend to have a lower total value. As shown in Figure 3, characters with a higher total value appeared in more issues than characters with a lower total value. Using these findings, we can create more accurate predictions on which characters, based on their total value, will have more appearances going forward in the X-Men comics.
+
+The partial F-test assesses whether the additional variable, TotalValue70s significantly improves the fit of the model.
+
+The results indicate that Model 2, which includes TotalValue70s, provides a significantly better fit to the data compared to Model 1 with the predictors TotalValue60s, TotalValue90s, and TotalValue90s, as evidenced by (p-value = .052, df = (2,21), f-statistic = 4.22) However, this p-value is marginally above the conventional significance level of 0.05, suggesting that the improvement in fit may not be statistically significant at the 5% level but could be considered significant at a higher significance level.
+
+Therefore, while there is some evidence to suggest that TotalValue70s_heritage contributes to explaining the variability in TotalIssues, further investigation or a larger sample size may be warranted to confirm its significance. But we did drop the variable.
+
+After running a regression analysis with Model 2, we found that there was statistically significant evidence that the total value of a character is a strong indicator of total issues (p-value = <.01, df = 18, f-statistic = 66.1). This means that there is strong evidence that characters with a higher amount of total appearances tend to have a higher total value, and characters with a lower amount of total appearances tend to have a lower total value. As shown in Figure 3, characters with a higher total value appeared in more issues than characters with a lower total value. Using these findings, we can create more accurate predictions on which characters, based on their total value, will have more appearances going forward in the X-Men comics.
 
 
 
