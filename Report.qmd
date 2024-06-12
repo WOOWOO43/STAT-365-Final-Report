@@ -1,5 +1,5 @@
 ---
-title: "Final Report"
+title: "The Prominence of X-Men Characters: Factors Influencing Appearance Frequency in Marvel Comics"
 author: 
   - name: Warren Woo
     affil-id: 1
@@ -16,7 +16,7 @@ date: last-modified
 date-format: "5/31/24"
 format: 
   pdf: 
-    toc: true # Include a table of contents
+    toc: false # Dont Include a table of contents
     number-sections: true # Number the sections
     geometry: "margin=1in"
   html:
@@ -160,7 +160,8 @@ Sex_boxplot <- ggplot(MutantData, aes(x = Sex, y = TotalIssues, color = Sex)) +
   labs(
     title = "Variability in Total Issues by Sex", 
     x = "Sex", 
-    y = "Total Issues", 
+    y="",
+    subtitle = "Total Issues", 
     color = "Sex", 
     legend = "Sex",
     fill = "Sex"
@@ -207,8 +208,9 @@ decade_boxplot <- ggplot(MutantData, aes(x = decadeintroduced, y = TotalIssues90
   geom_jitter(position = position_jitter(0.2), size = 1, alpha = 0.7) +
   labs(
     title = "Variability in Total Issues in the 90s by Decade Introduced", 
-    x = "Decade Introduced", 
-    y = "Total Issues in 90s", 
+    x = "Decade Introduced",
+    y= "",
+    subtitle = "Total Issues in 90s", 
     color = "decadeintroduced", 
     legend = "decadeintroduced",
     fill = "decadeintroduced"
@@ -275,7 +277,8 @@ valuescatter_plot <- ggplot(filteredmutant, aes(x = GrandTotalValue, y = TotalIs
   geom_smooth(method ="lm", se = FALSE, linetype = "solid", color = "navy") +
   labs(title = "Total Value vs Total Issues",
     x = "Total Value($)",
-    y = "Total Issues"
+    y="",
+    subtitle = "Total Issues"
   ) + theme_bw() + theme(plot.title = element_text(hjust=0.5)) +
   scale_x_continuous(labels = scales::dollar, expand = c(.025, 0)) +
   coord_cartesian(xlim = c(0, max(filteredmutant$GrandTotalValue))) 
