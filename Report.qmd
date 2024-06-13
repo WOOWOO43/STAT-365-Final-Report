@@ -104,14 +104,20 @@ The data collection took place in 2022 by Anderson Evans for his article on the 
 The response variable that we are interested in testing is the total issues of X-men appearances, to see if the variables we choose below have an effect on an X-men’s total issues.
 The variables we used were
 
-TotalValue_heritage: The total value of each X-Men team member's issues as reflected by Heritage's highest sale, in dollars
-TotalValue60s, TotalValue70s, TotalValue80s, TotalValue90s: The total values for each decade (60s, 70s, 80s, and 90s) from Heritage.
-TotalValue_ebay60s, TotalValue_ebay70s, TotalValue_ebay80s, TotalValue_ebay90s: The total value of each X-Men team member's issues as reflected by Ebay's highest sale.
-Members: The X-Men characters.
-Total Issues: The total number of issues each character appeared in from the 60s to the 90s.
-TotalValue, TotalValue60s, TotalValue70s, TotalValue80s, TotalValue90s: Combined values from Heritage and Ebay.
-Sex: The X-men’s sex
-Decade Introduced: The decade of an X-men’s first appearance
+Total Value (Heritage): The total value of each X-Men team member’s issues as reflected by Heritage’s highest sale, in dollars. 
+
+
+Total Value (60s - Heritage), Total Value (70s - Heritage), Total Value (80s - Heritage), Total Value (90s - Heritage): The total values for each decade 60s, 70s, 80s, and 90s from Heritage. 
+
+Total Value (eBay - 60s), Total Value (eBay - 70s), Total Value (eBay - 80s), Total Value (eBay - 90s): The total value of each X-Men team member’s issues as reflected by eBay’s highest sale. 
+
+Members: The X-Men characters. Total Issues: The total number of issues each character appeared in from the 60s to the 90s. 
+
+Total Value (Combined), Total Value (60s - Combined), Total Value (70s - Combined), Total Value (80s - Combined), Total Value (90s - Combined): Combined values from Heritage and eBay. 
+
+Sex: The X-Men’s sex. 
+
+Decade Introduced: The decade of an X-Men’s first appearance.
 
 
 
