@@ -13,10 +13,10 @@ affiliations:
   - id: 1
     name: Department of Statistics, Cal Poly - SLO
 date: last-modified
-date-format: "5/31/24"
+date-format: "6/12/24"
 format: 
   pdf: 
-    toc: false # Dont Include a table of contents
+    toc: false # Dont
     number-sections: true # Number the sections
     geometry: "margin=1in"
   html:
@@ -87,14 +87,15 @@ MutantData <- MutantData %>%
   )
 ```
 
+
 ## Introduction {#intro}
 The X-Men, a cornerstone of Marvel Comics introduced in 1963, showcases a variety of mutants with unique abilities, yet their visibility in the comic series varies significantly. This study investigates what drives the prominence of certain characters over others, analyzing data on 26 X-Men characters from 1963 to 1992 to uncover the underlying factors influencing their appearance frequency, or total issues.
 
 Using a dataset compiled by Anderson Evans from the Marvel Fandom Database, we examine variables such as total appearances, appearance percentages by decade, estimated monetary values, and gender. The findings, based on rigorous statistical analysis, aim to offer a deeper understanding of the dynamics shaping narrative decisions in the X-Men comics. This report will begin by providing an overview of the data set and variables, followed by a detailed description of the statistical methods used. The results section will present the findings in the form of graphs and tables, and the discussion will interpret these results as well as discuss any issues or limitations with the data. Finally, the conclusion will summarize the key takeaways and suggest future directions for research on factors influencing X-Men character appearances.
 
+\newpage
 
 ## Data and Methods
-
 
 
 ### Data Collection
@@ -119,39 +120,46 @@ To make the total value easier to understand we merged values from Heritage and 
 
 We first wanted to test if sex had an effect on total issues. So we ran a two-sample t-test, with male as one group, and female as the other group. The two-sample t-test was conducted to compare the means of total issues between male and female characters. Null Hypothesis (H0): There is no significant difference in the mean number of total issues between male and female X-Men characters.  Alternative Hypothesis (H1): There is a significant difference in the mean number of total issues between male and female X-Men characters.
 
-Furthermore the data was analyzed using multiple linear regression twice. The first time was to determine if there were significant differences in the total number of issues based on the decade a character was introduced. While the second time was with a total number of issues, based on the total value of the decade. Checking model assumptions for both models. it seems like all the FINE (Form, Independence, Normality, Equal Variance) to determine if appropriate assumptions are met: normality is good, equal variance seems okay, and independence is met through the assumption that the the values of the comics don't affect each other, but for context there is a light issue as the sample size is small, it is only 26 X-men.  
+Furthermore the data was analyzed using multiple linear regression twice. The first time was to determine if there were significant differences in the total number of issues based on the decade a character was introduced. While the second time was with a total number of issues, based on the total value of the decade. Checking model assumptions for both models. it seems like all the FINE (Form, Independence, Normality, Equal Variance) to determine if appropriate assumptions are met: normality is good, equal variance seems okay, and independence is met through the assumption that the the values of the comics don't affect each other, but for context there is a light issue as the sample size is small, it is only 26 X-men. 
 
 
 ## Results {#results}
 
 With a total of 26 X-Men members to go off of, 15 being male and 11 being female, the mean amount of total issues was 85.27. The mean for males was 94.73 (sd = .151) and the mean for females was 72.36 (sd = 358). The highest male was Scott Summers with 197 appearances and the lowest male was John Proudstar with only 3 appearances. The highest female was Ororo Munroe with 190 appearances and the lowest females was Remy Lebeau with 17 appearances.
-```{r}
+
+
+
+```{r, echo=FALSE}
 #| label: T
+#| fig-width: 1
+#| fig-height: 1
 #| fig-cap: "Table 1: The table shown displays all of the X-Men members total issues, ordered from greatest to least. 8 out of the top 10 characters are male"
 #| fig-align: center
 #| fig-pos: "H"
 library(kableExtra)
-tabledata <- MutantData
+# Assuming MutantData is your dataset
 
-tabledata <- tabledata[order(tabledata$TotalIssues, decreasing = TRUE), c("Member", "TotalIssues", "Sex"), drop = FALSE]
+# Sort the data by TotalIssues in decreasing order
+tabledata <- MutantData[order(MutantData$TotalIssues, decreasing = TRUE), c("Member", "TotalIssues", "Sex"), drop = FALSE]
 
+# Identify indices for males and females
+color.male <- which(tabledata$Sex == 'Male')
+color.female <- which(tabledata$Sex == 'Female')
 
-color.male = which(tabledata$Sex == 'Male')
-color.female = which(tabledata$Sex == 'Female')
-
-kbl(tabledata, booktabs = T, row.names=FALSE) %>%
-  kable_styling(position = "center") %>%
-  kable_styling(font_size = 20,  full_width = FALSE) %>%
+# Create the table
+kable(tabledata, booktabs = TRUE, row.names = FALSE) %>%
+  kable_styling(position = "center", font_size = 20, full_width = FALSE) %>%
   row_spec(color.male, color = "blue") %>%
   row_spec(color.female, color = "pink")
+
 ```
  
-
 ```{r}
 #| label: f
 #| fig-cap: "The two boxplots show the variability in total issues for males and females X-Men characters. The male character group had higher variability and a higher median, however the two groups had the same amount of outliers. Each dot represents one member."
 #| fig-align: center
 #| fig-pos: "H"
+
 
 
 Sex_boxplot <- ggplot(MutantData, aes(x = Sex, y = TotalIssues, color = Sex)) +
@@ -210,7 +218,7 @@ decade_boxplot <- ggplot(MutantData, aes(x = decadeintroduced, y = TotalIssues90
     title = "Variability in Total Issues in the 90s by Decade Introduced", 
     x = "Decade Introduced",
     y= "",
-    subtitle = "Total Issues in 90s", 
+    subtitle = "Total Issues in 90s",  
     color = "decadeintroduced", 
     legend = "decadeintroduced",
     fill = "decadeintroduced"
@@ -267,8 +275,6 @@ After running a linear regression test, we determined that we did not have enoug
 #| fig-cap: "This graph illustrates the correlation between total value and total issues for each X-Man character. The plot reveals a positive correlation between these variables, indicating that characters with higher total values tend to have more appearances. Additionally, notable outliers are observed, representing a high amount of appearances despite relitvely smaller total value. The X-Men labeled are some of the more popular X-Men in today's pop culture landscape today"
 #| fig-align: center
 #| fig-pos: "H"
-
-
 filteredmutant <- MutantData %>%
   filter(decadeintroduced != "1970s")
 
@@ -278,8 +284,7 @@ valuescatter_plot <- ggplot(filteredmutant, aes(x = GrandTotalValue, y = TotalIs
   labs(title = "Total Value vs Total Issues",
     x = "Total Value($)",
     y="",
-    subtitle = "Total Issues"
-  ) + theme_bw() + theme(plot.title = element_text(hjust=0.5)) +
+    subtitle = "Total Issues"  ) + theme_bw() + theme(plot.title = element_text(hjust=0.5)) +
   scale_x_continuous(labels = scales::dollar, expand = c(.025, 0)) +
   coord_cartesian(xlim = c(0, max(filteredmutant$GrandTotalValue))) 
   
@@ -305,24 +310,22 @@ valuescatter <- valuescatter_plot +
 
 print(valuescatter)
 ```
+After running a regression analysis, we found that there was statistically significant evidence that the total value of a character is a strong indicator of total issues (p-value = <.01, df = 18, f-statistic = 66.1). This means that there is strong evidence that characters with a higher amount of total appearances tend to have a higher total value, and characters with a lower amount of total appearances tend to have a lower total value. As shown in Figure 3, characters with a higher total value appeared in more issues than characters with a lower total value. Using these findings, we can create more accurate predictions on which characters, based on their total value, will have more appearances going forward in the X-Men comics.
 
-The partial F-test assesses whether the additional variable, TotalValue70s significantly improves the fit of the model.
-
-The results indicate that Model 2, which includes TotalValue70s, provides a significantly better fit to the data compared to Model 1 with the predictors TotalValue60s, TotalValue90s, and TotalValue90s, as evidenced by (p-value = .052, df = (2,21), f-statistic = 4.22) However, this p-value is marginally above the conventional significance level of 0.05, suggesting that the improvement in fit may not be statistically significant at the 5% level but could be considered significant at a higher significance level.
-
-Therefore, while there is some evidence to suggest that TotalValue70s_heritage contributes to explaining the variability in TotalIssues, further investigation or a larger sample size may be warranted to confirm its significance. But we did drop the variable.
-
-After running a regression analysis with Model 2, we found that there was statistically significant evidence that the total value of a character is a strong indicator of total issues (p-value = <.01, df = 18, f-statistic = 66.1). This means that there is strong evidence that characters with a higher amount of total appearances tend to have a higher total value, and characters with a lower amount of total appearances tend to have a lower total value. As shown in Figure 3, characters with a higher total value appeared in more issues than characters with a lower total value. Using these findings, we can create more accurate predictions on which characters, based on their total value, will have more appearances going forward in the X-Men comics.
-
-
+\newpage
 
 ## Discussion {#discussion}
-Our report aimed to uncover the key variables that influence the total appearance count of X-Men characters. After conducting our analysis, we learned that the more profitable an X-Men character is, the more they're going to appear in X-Men comic-book issues. This analysis aimed to identify the key factors that influence the total appearance count of X-Men characters in comic book issues from the 1960s to the 1990s. The results suggest that a character's profitability, as measured by their estimated monetary value, is positively correlated with their total number of appearances. This finding aligns with expectations, as publishers are likely to feature popular and lucrative characters more frequently to capitalize on their success and appeal to readers. The effect of profitability on appearance count was found to be statistically significant, with a moderate to large effect size based on the regression analysis. This indicates that the relationship is unlikely due to chance and has practical significance in understanding character prominence. However, it is important to consider that while profitability is a strong predictor, it is not the sole determinant of appearance frequency. Other factors, such as narrative importance, character development, and creative decisions, also play a role in shaping character appearances. The strengths of this study lie in the comprehensive dataset, which covers a substantial period of X-Men history and includes a diverse range of characters. However, the observational nature of the data limits the ability to draw definitive cause-and-effect conclusions. While profitability and appearance count are correlated, it is possible that other unmeasured variables are influencing this relationship. The findings of this study can be generalized to the population of X-Men characters featured in comic books from the 1960s to the 1990s. However, caution should be exercised when extending these conclusions to other comic book franchises or time periods, as the dynamics and factors influencing character appearances may differ. This research contributes to the existing knowledge base by providing empirical evidence for the link between character profitability and appearance frequency in the context of X-Men comics. It highlights the importance of considering financial factors when analyzing character prominence and opens avenues for further research on the interplay between commercial success and creative decisions in the comic book industry.Limitations of this study include the potential for selection bias, as the dataset only includes a subset of X-Men characters and may not fully represent the entire franchise. Additionally, the reliance on estimated monetary values as a proxy for profitability may not capture all aspects of a character's financial success or appeal. Future research could explore alternative measures of profitability and expand the scope of the analysis to include more characters and a wider range of publication years.In conclusion, this study reveals that profitability is a significant factor influencing the total appearance count of X-Men characters in comic books from the 1960s to the 1990s. While this finding provides valuable insights into character prominence, it is important to consider the limitations and potential biases of the analysis when interpreting the results. Further research is needed to fully understand the complex dynamics shaping character appearances in the comic book industry.
+  Our report aimed to uncover the key variables that influence the total appearance count of X-Men characters. After conducting our analysis, we learned that the more profitable an X-Men character is, the more they're going to appear in X-Men comic-book issues. This analysis aimed to identify the key factors that influence the total appearance count of X-Men characters in comic book issues from the 1960s to the 1990s. The results suggest that a character's profitability, as measured by their estimated monetary value, is positively correlated with their total number of appearances. This finding aligns with expectations, as publishers are likely to feature popular and lucrative characters more frequently to capitalize on their success and appeal to readers. The effect of profitability on appearance count was found to be statistically significant, with a moderate to large effect size based on the regression analysis. This indicates that the relationship is unlikely due to chance and has practical significance in understanding character prominence. However, it is important to consider that while profitability is a strong predictor, it is not the sole determinant of appearance frequency. Other factors, such as narrative importance, character development, and creative decisions, also may play a role in shaping character appearances. So while the other factors we analyzed, those being sex and decade of introduction, resulted in us finding insufficient evidence that they were significant factors, we believe that there are other confounding variables that could influence a characters total number of appearances. 
+  The strengths of this study lie in the comprehensive data set, which covers a substantial period of X-Men history and includes a diverse range of characters. However, the observational nature of the data limits the ability to draw definitive cause-and-effect conclusions. Limitations of this study include the potential for selection bias, as the data set only includes a subset of X-Men characters and may not fully represent the entire franchise. While profitability and appearance count are correlated, it is also possible that other unmeasured variables are influencing this relationship. This study was not generated from a random sample, so caution must be taken into consideration when generalizing the results. Additionally, the reliance on estimated monetary values as a proxy for profitability may not capture all aspects of a character's financial success or appeal. 
+  This research contributes to the existing knowledge base by providing empirical evidence for the link between character profitability and appearance frequency in the context of X-Men comics. It highlights the importance of considering financial factors when analyzing character prominence and opens avenues for further research on the interplay between commercial success and creative decisions in the comic book industry. Future research could explore alternative measures of profitability and expand the scope of the analysis to include more characters and a wider range of publication years.In conclusion, this study reveals that profitability is a significant factor influencing the total appearance count of specific X-Men characters in comic books from the 1960s to the 1990s. While this finding provides valuable insights into character prominence, it is important to consider the limitations and potential biases of the analysis when interpreting the results. Further research is needed to fully understand the complex dynamics shaping character appearances in the comic book industry.
  
  
+\newpage
  
 ## Conclusion {#conclusion}
-Ultimately, our data suggests that if you're a profitable X-Men character, you get put in more X-Men comic book issues. Within the confines of the dataset, outside of monetary value, there aren't any other statistically significant contributing factors to a X-Men’s total appearances. We can only generalize our results to other X-Men comic book characters, because the data only looked at X-Men characters. Drawing a conclusion to other Marvel characters would be unwise because our sample isn’t representative of the Marvel population as a whole. In other words, our research has low generalizability; our results are only representative of our sample containing X-Men characters. Furthermore, we cannot infer causality because there simply exists many more variables that contribute to an X-Men’s total appearances, which are not included in the dataset; variables such as: an X-Men character’s writer, an X-Men’s amount of media appearances outside of the comics, and how many plots/storylines does an X-Men character appear in. For those interested and curious - these variables necessitate more investigation. Theoretically, there are infinitely many variables that could contribute to an X-Men’s number of appearances in comic book issues, and if one was extremely curious, they could run a study including some of these variables to continue our research and attempt to answer the question: “What drives the prominence of certain X-Men characters over others? What are the underlying factors influencing their appearance frequency?” Although, from our data set, we were only able to determine that one factor, that being a character's total value, was a strong indicator in their total amount of issues, we are confident that there are more confounding factors in what goes into how many issues a character appears in. By furthering our research, we believe that these researchers will discover some groundbreaking results that could change the way comic book writers write their characters.
+Ultimately, our data suggests that if you're a profitable X-Men character, you get put in more X-Men comic book issues. Within the confines of the dataset, outside of monetary value, there aren't any other statistically significant contributing factors to a X-Men’s total appearances. We cannot generalize our results to other X-Men comic book characters because the data only looked was not a random sample. Drawing a conclusion to other Marvel characters would be unwise because our sample isn’t representative of the Marvel population as a whole either. In other words, our research has very low generalizability; our results are only representative of our sample. Furthermore, we cannot infer causality either because there simply exists many more variables that contribute to an X-Men’s total appearances, which are not included in the dataset; variables such as: an X-Men character’s writer, an X-Men’s amount of media appearances outside of the comics, and how many plots/storylines does an X-Men character appear in. For those interested and curious - these variables necessitate more investigation. Theoretically, there are infinitely many variables that could contribute to an X-Men’s number of appearances in comic book issues, and if one was extremely curious, they could run a study including some of these variables to continue our research and attempt to answer the question: “What drives the prominence of certain X-Men characters over others? What are the underlying factors influencing their appearance frequency?” Although, from our data set, we were only able to determine that one factor, that being a character's total value, was a strong indicator in their total amount of issues, we are confident that there are more confounding factors in what goes into how many issues a character appears in. By furthering our research, we believe that these researchers will discover some groundbreaking results that could change the way comic book writers write their characters.
+
+\newpage
 
 ## References {#references}
 
