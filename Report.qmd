@@ -259,7 +259,7 @@ valuescatterer <- decade_boxplot +
   geom_text(
     data = points,
     aes(label = member_label),
-    vjust = -.6, 
+    vjust = -.2, 
     hjust = .5,
     size = 3,
     color = "gray50",
